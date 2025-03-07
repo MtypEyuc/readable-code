@@ -1,5 +1,9 @@
 package cleancode.minesweeper.tobe;
 
+import cleancode.minesweeper.tobe.cell.Cell;
+import cleancode.minesweeper.tobe.cell.EmptyCell;
+import cleancode.minesweeper.tobe.cell.LandMindCell;
+import cleancode.minesweeper.tobe.cell.NumberCell;
 import cleancode.minesweeper.tobe.gamelevel.GameLevel;
 
 import java.util.Arrays;
@@ -58,12 +62,9 @@ public class GameBoard {
     }
 
     private boolean isOpenedCell(int row, int col) {
-        return getCell(row, col).isOpened();
+        return findCell(row, col).isOpened();
     }
 
-    private Cell getCell(int row, int col) {
-        return findCell(row, col);
-    }
 
     public  boolean isLandMineCell(int selectedRowIndex, int selectedColIndex) {
         Cell cell = findCell(selectedRowIndex, selectedColIndex);
@@ -77,20 +78,20 @@ public class GameBoard {
     }
 
     public  void initializeGame() {
-        int rowSize = board.length;
-        int colSize = board[0].length;
+        int rowSize = getRowSize();
+        int colSize = getColSize();
 
         for (int row = 0; row < rowSize; row++) {
             for (int col = 0; col < colSize; col++) {
-                board[row][col] = Cell.create();
+                board[row][col] = new EmptyCell();
             }
         }
 
         for (int i = 0; i < landMineCount; i++) {
             int landMineCol = new Random().nextInt(colSize);
             int landMIneRow = new Random().nextInt(rowSize);
-            Cell landMineCell =  findCell(landMIneRow,landMineCol);
-            landMineCell.turnOnLandMine();
+            LandMindCell landMindCell = new LandMindCell();
+            board[landMIneRow][landMineCol] = landMindCell;
         }
 
         for (int row = 0; row < rowSize; row++) {
@@ -99,11 +100,14 @@ public class GameBoard {
                     continue;
                 }
                 int count = countNearbyLandMines(row, col);
-                Cell cell = findCell(row, col);
-                cell.updateNearbyLandMineCount(count);
+                if (count == 0) {
+                    continue;
+                }
+                board[row][col] = new NumberCell(count);
             }
         }
     }
+
 
     public int getRowSize() {
         return board.length;
