@@ -17,6 +17,17 @@ public class EmptyCell implements Cell {
     }
 
     @Override
+    public CellSnapshot getSnapshot() {
+        if (cellState.isOpened()) {
+            return CellSnapshot.ofEmpty();
+        }
+        if (cellState.isFlagged()) {
+            return CellSnapshot.ofFlag();
+        }
+        return CellSnapshot.ofUnchecked();
+    }
+
+    @Override
     public String getSign() {
 
         if(cellState.isOpened()){
