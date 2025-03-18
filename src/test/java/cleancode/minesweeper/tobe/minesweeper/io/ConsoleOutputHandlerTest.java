@@ -2,7 +2,6 @@ package cleancode.minesweeper.tobe.minesweeper.io;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -27,24 +26,18 @@ class ConsoleOutputHandlerTest {
     }
 
     @Test
-    @DisplayName("게임 승리 시 승리 메시지가 출력되어야 한다.")
     void showGameWinningComment_ShouldPrintWinningMessage() {
 
-        // When
         outputHandler.showGameWinningComment();
 
-        // Then
         assertThat(outputStream.toString().trim()).isEqualTo("지뢰를 모두 찾았습니다. GAME CLEAR!");
     }
 
     @Test
-    @DisplayName("게임 패배 시 패배 메시지가 출력되어야 한다.")
     void showGameLosingComment_ShouldPrintLosingMessage() {
 
-        // When
         outputHandler.showGameLosingComment();
 
-        // Then
         assertThat(outputStream.toString().trim()).isEqualTo("지뢰를 밟았습니다. GAME OVER!");
     }
 }
